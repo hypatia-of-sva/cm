@@ -81,25 +81,25 @@ void print_escape(FILE* fd, char c) {
             fprintf(fd, "\\\\");
             break;
         case '\a':
-            fprintf(fd, "\\\a");
+            fprintf(fd, "\\a");
             break;
         case '\b':
-            fprintf(fd, "\\\b");
+            fprintf(fd, "\\b");
             break;
         case '\f':
-            fprintf(fd, "\\\f");
+            fprintf(fd, "\\f");
             break;
         case '\n':
-            fprintf(fd, "\\\n");
+            fprintf(fd, "\\n");
             break;
         case '\r':
-            fprintf(fd, "\\\r");
+            fprintf(fd, "\\r");
             break;
         case '\t':
-            fprintf(fd, "\\\t");
+            fprintf(fd, "\\t");
             break;
         case '\v':
-            fprintf(fd, "\\\v");
+            fprintf(fd, "\\v");
             break;
         default:
             fprintf(fd, "\\x%x",c);
