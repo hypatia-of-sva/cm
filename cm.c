@@ -5,6 +5,102 @@
 #include <string.h>
 #include <sys/stat.h>
 
+const char* c_headers =
+"/* include all libc headers */\n"
+"#include <errno.h>\n"
+"#include <stddef.h>\n"
+"#include <assert.h>\n"
+"#include <ctype.h>\n"
+"#include <locale.h>\n"
+"#include <math.h>\n"
+"#include <setjmp.h>\n"
+"#include <signal.h>\n"
+"#include <stdarg.h>\n"
+"#include <stdio.h>\n"
+"#include <stdlib.h>\n"
+"#include <string.h>\n"
+"#include <time.h>\n"
+"#include <float.h>\n"
+"#include <limits.h>\n"
+"#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L))\n"
+"#include <fenv.h>\n"
+"#include <inttypes.h>\n"
+"#include <iso646.h>\n"
+"#include <stdbool.h>\n"
+"#include <stdint.h>\n"
+"#include <tgmath.h>\n"
+"#include <wchar.h>\n"
+"#include <wctype.h>\n"
+"#if !defined(__STDC_NO_COMPLEX__)\n"
+"#include <complex.h>\n"
+"#endif\n"
+"#if (__STDC_VERSION__ >= 201112L)\n"
+"#include <stdalign.h>\n"
+"#include <stdnoreturn.h>\n"
+"#include <uchar.h>\n"
+"#if !defined(__STDC_NO_ATOMICS__)\n"
+"#include <stdatomic.h>\n"
+"#endif\n"
+"#if !defined(__STDC_NO_THREADS__)\n"
+"#include <threads.h>\n"
+"#endif\n"
+"#if (__STDC_VERSION__ >= 202311L)\n"
+"#include <stdbit.h>\n"
+"#include <stdckdint.h>\n"
+"#endif\n"
+"#endif\n"
+"#endif\n";
+
+const char* unix_headers =
+"/* Include all non-extension posix headers on unix systems */\n"
+"#if defined(__unix__)\n"
+"#define _POSIX_C_SOURCE 202405L\n"
+"#include <unistd.h>\n"
+"#if (defined(_POSIX_VERSION) && (_POSIX_VERSION >= 200809L))\n"
+"#include <aio.h>\n"
+"#include <arpa/inet.h>\n"
+"#include <cpio.h>\n"
+"#include <dirent.h>\n"
+"#include <dlfcn.h>\n"
+"#include <fcntl.h>\n"
+"#include <fnmatch.h>\n"
+"#include <glob.h>\n"
+"#include <grp.h>\n"
+"#include <iconv.h>\n"
+"#include <langinfo.h>\n"
+"#include <monetary.h>\n"
+"#include <net/if.h>\n"
+"#include <netdb.h>\n"
+"#include <netinet/in.h>\n"
+"#include <netinet/tcp.h>\n"
+"#include <nl_types.h>\n"
+"#include <poll.h>\n"
+"#include <pthread.h>\n"
+"#include <pwd.h>\n"
+"#include <regex.h>\n"
+"#include <sched.h>\n"
+"#include <semaphore.h>\n"
+"#include <strings.h>\n"
+"#include <sys/mman.h>\n"
+"#include <sys/select.h>\n"
+"#include <sys/socket.h>\n"
+"#include <sys/stat.h>\n"
+"#include <sys/statvfs.h>\n"
+"#include <sys/times.h>\n"
+"#include <sys/types.h>\n"
+"#include <sys/un.h>\n"
+"#include <sys/utsname.h>\n"
+"#include <sys/wait.h>\n"
+"#include <tar.h>\n"
+"#include <termios.h>\n"
+"#include <wordexp.h>\n"
+"#if (_POSIX_VERSION >= 202405L)\n"
+"#include <endian.h>\n"
+"#include <libintl.h>\n"
+"#endif\n"
+"#endif\n"
+"#endif\n";
+
 void die(const char* str) {
     fprintf(stderr, str);
     exit(EXIT_FAILURE);
@@ -153,6 +249,21 @@ void parse_and_write_output(const char* input_buf, size_t input_len, const char*
     fclose(file);
 }
 
+void create_header(const char* header_file_name) {
+    FILE *file;
+
+    if(file_exists(header_file_name)) return;
+
+    file = fopen(header_file_name,"wb");
+    if(file == NULL) die("Error when trying to create header file!\n");
+
+    fprintf(file, unix_headers);
+    fprintf(file, "\n\n");
+    fprintf(file, c_headers);
+
+    fclose(file);
+}
+
 int main(int argc, char** argv) {
     char* input = NULL; char* output = NULL; char* header = NULL;
     char* input_buf; size_t input_len;
@@ -187,6 +298,8 @@ int main(int argc, char** argv) {
     }
 
     printf("Input from file: %s\nOutput into file: %s\nUsed header: %s\n", input, output, header);
+
+    create_header(header);
 
     read_whole_file(input, &input_buf, &input_len);
 
