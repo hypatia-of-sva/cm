@@ -107,7 +107,7 @@ void die(const char* str) {
 }
 void usage(const char* program_name) {
     printf("Usage: %s [-o outputname] [-h headerfilename] filename\n"
-           "Use the environment-variable CMC_DEFAULT_HEADER_NAME to set a default header; otherwise, (input).h will be used.\n", program_name);
+           "Use the environment-variable CM_DEFAULT_HEADER_NAME to set a default header; otherwise, (input).h will be used.\n", program_name);
     exit(0);
 }
 
