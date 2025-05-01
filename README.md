@@ -56,7 +56,7 @@ char* types[10] = {"int8_t", "uint8_t", "int16_t", "uint16_t", "int32_t", "uint3
 char* functname_suffix[10] = {"i8", "u8", "i16", "u16", "i32", "u32", "i64", "u64", "f32", "f64"};
 for(int i = 0; i < 10; i++) {
 ?>
-#define T ?c puts(types[i]); ?>
+#define T <?c puts(types[i]); ?>
 void quick_sort_<?c puts(functname_suffix[i]); ?>(T* array, size_t len) {
     /* iterative quicksort, adapted from https://www.geeksforgeeks.org/iterative-quick-sort/ */
     int* stack = calloc(len,sizeof(int));
