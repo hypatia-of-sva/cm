@@ -284,7 +284,7 @@ int main(int argc, char** argv) {
     input = argv[curr_arg];
 
     if(header == NULL) {
-        header = getenv("CMC_DEFAULT_HEADER_NAME");
+        header = getenv("CM_DEFAULT_HEADER_NAME");
         if(header == NULL) {
             header = malloc(strlen(input)+10);
             snprintf(header, strlen(input)+10, "%s.h", input);
