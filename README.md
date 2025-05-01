@@ -39,7 +39,7 @@ with a generated header `example.h` to include libc and posix headers, if no spe
 ## Full usage syntax
 
 Usage: `cm \[-o outputname\] \[-h headerfilename\] filename`
-Use the environment-variable CMC_DEFAULT_HEADER_NAME to set a default header; otherwise, (input).h will be used.
+Use the environment-variable CM_DEFAULT_HEADER_NAME to set a default header; otherwise, (input).h will be used.
 
 ## dependencies
 
