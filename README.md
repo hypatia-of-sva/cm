@@ -18,7 +18,7 @@ This will be translated into
 ```c
 #include "example.h"
 int main(int argc, char** argv) {
-puts(".... other text ..."
+printf(".... other text ..."
 "");
   /* Here we have C code that can algorithmically generate output by printing to stdout.
    * libc and unix facilities, if available, can be used by default. */
@@ -26,7 +26,7 @@ puts(".... other text ..."
     printf("cos(%i) = %f", i, cos(i*1.0));
   }
 
-puts(""
+printf(""
 "... more other text .."
 "");
 return 0;
@@ -58,8 +58,8 @@ char* functname_suffix[10] = {"i8", "u8", "i16", "u16", "i32", "u32",
   "i64", "u64", "f32", "f64"};
 for(int i = 0; i < 10; i++) {
 ?>
-#define T <?c puts(types[i]); ?>
-void quick_sort_<?c puts(functname_suffix[i]); ?>(T* array, size_t len) {
+#define T <?c printf(types[i]); ?>
+void quick_sort_<?c printf(functname_suffix[i]); ?>(T* array, size_t len) {
     /* iterative quicksort, adapted from https://www.geeksforgeeks.org/iterative-quick-sort/ */
     int* stack = calloc(len,sizeof(int));
     stack[0] = 0;
@@ -101,4 +101,45 @@ void quick_sort_<?c puts(functname_suffix[i]); ?>(T* array, size_t len) {
 ?>
 ```
 
-This will generate the 10 functions to sort arrays of native integer and floating point types.
+This will generate the 10 functions to sort arrays of native integer and floating point types; this is the first one:
+
+```c
+#define T int8_t
+void quick_sort_i8(T* array, size_t len) {
+    /* iterative quicksort, adapted from https://www.geeksforgeeks.org/iterative-quick-sort/ */
+    int* stack = calloc(len,sizeof(int));
+    stack[0] = 0;
+    stack[1] = len-1;
+    int top = 1;
+    while (top >= 0) {
+        int h = stack[top--];
+        int l = stack[top--];
+
+        /* partition: */
+        T x = array[h]; /* pivot */
+        int i = l-1;
+        for(int j = l; j < h; j++) {
+            if(array[j] <= x) {
+                i++;
+                T tmp = array[i];
+                array[i] = array[j];
+                array[j] = tmp;
+            }
+        }
+        T tmp = array[i+1];
+        array[i+1] = array[h];
+        array[h] = tmp;
+
+        if (i > l) {
+            stack[++top] = l;
+            stack[++top] = i;
+        }
+        if (i+2 < h) {
+            stack[++top] = i+2;
+            stack[++top] = h;
+        }
+    }
+    free(stack);
+}
+#undef T
+```
