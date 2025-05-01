@@ -52,8 +52,10 @@ One basic example that can be cumbersome in C, is generating basically the same 
 
 ```c
 <?c
-char* types[10] = {"int8_t", "uint8_t", "int16_t", "uint16_t", "int32_t", "uint32_t", "int64_t", "uint64_t", "float", "double"};
-char* functname_suffix[10] = {"i8", "u8", "i16", "u16", "i32", "u32", "i64", "u64", "f32", "f64"};
+char* types[10] = {"int8_t", "uint8_t", "int16_t", "uint16_t", "int32_t", "uint32_t",
+  "int64_t", "uint64_t", "float", "double"};
+char* functname_suffix[10] = {"i8", "u8", "i16", "u16", "i32", "u32",
+  "i64", "u64", "f32", "f64"};
 for(int i = 0; i < 10; i++) {
 ?>
 #define T <?c puts(types[i]); ?>
