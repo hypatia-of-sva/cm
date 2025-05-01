@@ -36,6 +36,10 @@ return 0;
 
 with a generated header `example.h` to include libc and posix headers, if no special header already exists with the name. The name of this header can also be overriden by a command-line variable or an environment variable. The real output of the program can now be reached by compiling this file with any c-compiler and running it in turn.
 
+## Why cm and not any other macro processor (m4, python scripts, zig, gpp etc.)?
+
+Because it also operates in C. This means you can use all of the code you have written or otherwise generated within it, effectively making C into a language with compile-time execution without adding anything to it, just by adding another compiler-and-run pass to your build system.
+
 ## Full usage syntax
 
 Usage: `cm \[-o outputname\] \[-h headerfilename\] filename`
