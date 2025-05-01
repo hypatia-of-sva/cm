@@ -220,7 +220,7 @@ void parse_and_write_output(const char* input_buf, size_t input_len, const char*
         cur = 4;
     }
 
-    if(!in_code_section) fprintf(file, "puts(\"");
+    if(!in_code_section) fprintf(file, "printf(\"");
 
     while(cur < input_len) {
         if(!in_code_section && (input_len - cur) > 4 && code_section_begin(&input_buf[cur])) {
@@ -228,11 +228,11 @@ void parse_and_write_output(const char* input_buf, size_t input_len, const char*
             cur+=4;
             in_code_section = true;
         } else if(in_code_section && (input_len - cur) > 2 && code_section_end(&input_buf[cur])) {
-            fprintf(file, "\nputs(\"");
+            fprintf(file, "\nprintf(\"");
             cur+=2;
             in_code_section = false;
         } else if(!in_code_section && input_buf[cur] == '\n') {
-            fprintf(file, "\"\n\"");
+            fprintf(file, "\\n\"\n\"");
             cur++;
         } else if(!in_code_section && !valid_string_char(input_buf[cur])) {
             print_escape(file, input_buf[cur]);
