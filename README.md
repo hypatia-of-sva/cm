@@ -5,7 +5,8 @@ This little tool makes use of C as a macro processor to create any other text (i
 ```
 .... other text ...
 <?c
-  /* Here we have C code that can algorithmically generate output by printing to stdout. libc and unix facilities, if available, can be used by default. */
+  /* Here we have C code that can algorithmically generate output by printing to stdout.
+   * libc and unix facilities, if available, can be used by default. */
   for(int i = 0; i < 100; i++) {
     printf("cos(%i) = %f", i, cos(i*1.0));
   }
@@ -19,7 +20,8 @@ This will be translated into
 int main(int argc, char** argv) {
 puts(".... other text ..."
 "");
-  /* Here we have C code that can algorithmically generate output by printing to stdout. libc and unix facilities, if available, can be used by default. */
+  /* Here we have C code that can algorithmically generate output by printing to stdout.
+   * libc and unix facilities, if available, can be used by default. */
   for(int i = 0; i < 100; i++) {
     printf("cos(%i) = %f", i, cos(i*1.0));
   }
