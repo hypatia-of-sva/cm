@@ -50,13 +50,14 @@ Code generated with cm, especially when using custom headers, obviously can make
 
 One basic example that can be cumbersome in C, is generating basically the same function for different types. Here is an example of how to create different functions for the same quicksort implementations for different types:
 
-```
+```c
 <?c
 char* types[10] = {"int8_t", "uint8_t", "int16_t", "uint16_t", "int32_t", "uint32_t", "int64_t", "uint64_t", "float", "double"};
+char* functname_suffix[10] = {"i8", "u8", "i16", "u16", "i32", "u32", "i64", "u64", "f32", "f64"};
 for(int i = 0; i < 10; i++) {
-  char* T = types[i];
 ?>
-void quick_sort_<?c puts(T); ?>(<?c puts(T); ?>* array, size_t len) {
+#define T ?c puts(types[i]); ?>
+void quick_sort_<?c puts(functname_suffix[i]); ?>(T* array, size_t len) {
     /* iterative quicksort, adapted from https://www.geeksforgeeks.org/iterative-quick-sort/ */
     int* stack = calloc(len,sizeof(int));
     stack[0] = 0;
@@ -67,17 +68,17 @@ void quick_sort_<?c puts(T); ?>(<?c puts(T); ?>* array, size_t len) {
         int l = stack[top--];
 
         /* partition: */
-        <?c puts(T); ?> x = array[h]; /* pivot */
+        T x = array[h]; /* pivot */
         int i = l-1;
         for(int j = l; j < h; j++) {
             if(array[j] <= x) {
                 i++;
-                <?c puts(T); ?> tmp = array[i];
+                T tmp = array[i];
                 array[i] = array[j];
                 array[j] = tmp;
             }
         }
-        <?c puts(T); ?> tmp = array[i+1];
+        T tmp = array[i+1];
         array[i+1] = array[h];
         array[h] = tmp;
 
@@ -92,6 +93,7 @@ void quick_sort_<?c puts(T); ?>(<?c puts(T); ?>* array, size_t len) {
     }
     free(stack);
 }
+#undef T
 <?c
 }
 ?>
