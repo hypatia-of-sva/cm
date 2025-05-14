@@ -42,7 +42,7 @@ Because it also operates in C. This means you can use all of the code you have w
 
 ## Full usage syntax
 
-Usage: `cm \[-o outputname\] \[-h headerfilename\] filename`
+Usage: `cm [-o outputname] [-h headerfilename] filename`
 Use the environment-variable CM_DEFAULT_HEADER_NAME to set a default header; otherwise, (input).h will be used.
 
 ## dependencies
