@@ -206,6 +206,7 @@ void print_escape(FILE* fd, char c) {
 void parse_and_write_output(const char* input_buf, size_t input_len, const char* header_file_name, const char* output_path) {
     FILE *file;
     bool in_code_section = false;
+    bool in_printf_section = false;
     int cur = 0;
 
     assert(input_buf != NULL && input_len > 3 && header_file_name != NULL && output_path != NULL);
@@ -218,26 +219,48 @@ void parse_and_write_output(const char* input_buf, size_t input_len, const char*
     if(code_section_begin(input_buf)) {
         in_code_section = true;
         cur = 4;
+    } else if (input_buf[0] == '@') {
+        in_printf_section = true;
+        cur = 1;
     }
 
     if(!in_code_section) fprintf(file, "printf(\"");
 
     while(cur < input_len) {
-        if(!in_code_section && (input_len - cur) > 4 && code_section_begin(&input_buf[cur])) {
-            fprintf(file, "\");\n");
+        if (!in_code_section && input_buf[cur] == '@') {
+            if(!in_printf_section) {
+                fprintf(file, "\");\n");
+                fprintf(file, "printf(");
+                in_printf_section = true;
+            } else {
+                fprintf(file, ");\n");
+                fprintf(file, "printf(\"");
+                in_printf_section = false;
+            }
+            cur++;
+        } else if(!in_code_section && (input_len - cur) > 4 && code_section_begin(&input_buf[cur])) {
+            if(!in_printf_section) {
+                fprintf(file, "\");\n");
+            }
             cur+=4;
             in_code_section = true;
         } else if(in_code_section && (input_len - cur) > 2 && code_section_end(&input_buf[cur])) {
-            fprintf(file, "\nprintf(\"");
             cur+=2;
+            if(input_buf[cur] == '\n') {
+                /* avoids ugly newlines in output */
+                cur++;
+            }
+            if(!in_printf_section) {
+                fprintf(file, "\nprintf(\"");
+            }
             in_code_section = false;
-        } else if(!in_code_section && input_buf[cur] == '\n') {
+        } else if(!in_code_section && !in_printf_section && input_buf[cur] == '\n') {
             fprintf(file, "\\n\"\n\"");
             cur++;
-        } else if(!in_code_section && !valid_string_char(input_buf[cur])) {
+        } else if(!in_code_section && !in_printf_section && !valid_string_char(input_buf[cur])) {
             print_escape(file, input_buf[cur]);
             cur++;
-        } else {
+        } else { /* by exhaustion also for !in_code_section && in_printf_section && input_buf[cur] != '@' */
             fputc(input_buf[cur], file);
             cur++;
         }
