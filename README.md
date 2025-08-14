@@ -147,3 +147,60 @@ void quick_sort_i8(T* array, size_t len) {
 }
 #undef T
 ```
+
+## New - Direct variable mode!
+
+Since it was kind of clumsy to enter strings multiple times, where it wasn't easily supported by `#define`s, we added a new direct variable output mode. This means, that for example the following code:
+
+
+```c
+/* generated list of checked additions: */
+
+<?c
+#define INT_TYPE_NR 10
+const char* int_types[INT_TYPE_NR] = {"int8", "int16", "int32", "int64", "int128",
+                            "uint8", "uint16", "uint64", "uint32", "int128"};
+
+for(int i = 0; i < INT_TYPE_NR; i++) {
+char* t1 = int_types[i];
+for(int j = 0; j < INT_TYPE_NR; j++) {
+char* t2 = int_types[j];
+for(int k = 0; k < INT_TYPE_NR; k++) {
+char* t3 = int_types[k];
+?>
+bool32_t @t1@_checked_addition_of_@t2@_and_@t3@(@t1@_t* result, @t2@_t a, @t3@_t b);
+<?c
+}
+}
+}
+?>
+```
+
+Will generate the following list (only the beginning, since it is over 1000 lines long):
+```c
+/* generated list of checked additions: */
+
+bool32_t int8_checked_addition_of_int8_and_int8(int8_t* result, int8_t a, int8_t b);
+bool32_t int8_checked_addition_of_int8_and_int16(int8_t* result, int8_t a, int16_t b);
+bool32_t int8_checked_addition_of_int8_and_int32(int8_t* result, int8_t a, int32_t b);
+bool32_t int8_checked_addition_of_int8_and_int64(int8_t* result, int8_t a, int64_t b);
+bool32_t int8_checked_addition_of_int8_and_int128(int8_t* result, int8_t a, int128_t b);
+bool32_t int8_checked_addition_of_int8_and_uint8(int8_t* result, int8_t a, uint8_t b);
+bool32_t int8_checked_addition_of_int8_and_uint16(int8_t* result, int8_t a, uint16_t b);
+bool32_t int8_checked_addition_of_int8_and_uint64(int8_t* result, int8_t a, uint64_t b);
+bool32_t int8_checked_addition_of_int8_and_uint32(int8_t* result, int8_t a, uint32_t b);
+bool32_t int8_checked_addition_of_int8_and_int128(int8_t* result, int8_t a, int128_t b);
+bool32_t int8_checked_addition_of_int16_and_int8(int8_t* result, int16_t a, int8_t b);
+bool32_t int8_checked_addition_of_int16_and_int16(int8_t* result, int16_t a, int16_t b);
+bool32_t int8_checked_addition_of_int16_and_int32(int8_t* result, int16_t a, int32_t b);
+bool32_t int8_checked_addition_of_int16_and_int64(int8_t* result, int16_t a, int64_t b);
+bool32_t int8_checked_addition_of_int16_and_int128(int8_t* result, int16_t a, int128_t b);
+bool32_t int8_checked_addition_of_int16_and_uint8(int8_t* result, int16_t a, uint8_t b);
+bool32_t int8_checked_addition_of_int16_and_uint16(int8_t* result, int16_t a, uint16_t b);
+bool32_t int8_checked_addition_of_int16_and_uint64(int8_t* result, int16_t a, uint64_t b);
+bool32_t int8_checked_addition_of_int16_and_uint32(int8_t* result, int16_t a, uint32_t b);
+bool32_t int8_checked_addition_of_int16_and_int128(int8_t* result, int16_t a, int128_t b);
+...
+```
+
+The general syntax for this direct input is `@`something`@`; this will generate `printf(`something`);` in the output, the something can be a variable or a more complicated expression with a format string and multiple other parameters.
