@@ -159,7 +159,7 @@ Since it was kind of clumsy to enter strings multiple times, where it wasn't eas
 <?c
 #define INT_TYPE_NR 10
 const char* int_types[INT_TYPE_NR] = {"int8", "int16", "int32", "int64", "int128",
-                            "uint8", "uint16", "uint64", "uint32", "int128"};
+                            "uint8", "uint16", "uint32", "uint64", "uint128"};
 
 for(int i = 0; i < INT_TYPE_NR; i++) {
 char* t1 = int_types[i];
@@ -187,9 +187,9 @@ bool32_t int8_checked_addition_of_int8_and_int64(int8_t* result, int8_t a, int64
 bool32_t int8_checked_addition_of_int8_and_int128(int8_t* result, int8_t a, int128_t b);
 bool32_t int8_checked_addition_of_int8_and_uint8(int8_t* result, int8_t a, uint8_t b);
 bool32_t int8_checked_addition_of_int8_and_uint16(int8_t* result, int8_t a, uint16_t b);
-bool32_t int8_checked_addition_of_int8_and_uint64(int8_t* result, int8_t a, uint64_t b);
 bool32_t int8_checked_addition_of_int8_and_uint32(int8_t* result, int8_t a, uint32_t b);
-bool32_t int8_checked_addition_of_int8_and_int128(int8_t* result, int8_t a, int128_t b);
+bool32_t int8_checked_addition_of_int8_and_uint64(int8_t* result, int8_t a, uint64_t b);
+bool32_t int8_checked_addition_of_int8_and_uint128(int8_t* result, int8_t a, uint128_t b);
 bool32_t int8_checked_addition_of_int16_and_int8(int8_t* result, int16_t a, int8_t b);
 bool32_t int8_checked_addition_of_int16_and_int16(int8_t* result, int16_t a, int16_t b);
 bool32_t int8_checked_addition_of_int16_and_int32(int8_t* result, int16_t a, int32_t b);
@@ -197,9 +197,9 @@ bool32_t int8_checked_addition_of_int16_and_int64(int8_t* result, int16_t a, int
 bool32_t int8_checked_addition_of_int16_and_int128(int8_t* result, int16_t a, int128_t b);
 bool32_t int8_checked_addition_of_int16_and_uint8(int8_t* result, int16_t a, uint8_t b);
 bool32_t int8_checked_addition_of_int16_and_uint16(int8_t* result, int16_t a, uint16_t b);
-bool32_t int8_checked_addition_of_int16_and_uint64(int8_t* result, int16_t a, uint64_t b);
 bool32_t int8_checked_addition_of_int16_and_uint32(int8_t* result, int16_t a, uint32_t b);
-bool32_t int8_checked_addition_of_int16_and_int128(int8_t* result, int16_t a, int128_t b);
+bool32_t int8_checked_addition_of_int16_and_uint64(int8_t* result, int16_t a, uint64_t b);
+bool32_t int8_checked_addition_of_int16_and_uint128(int8_t* result, int16_t a, uint128_t b);
 ...
 ```
 
